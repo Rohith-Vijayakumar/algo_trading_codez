@@ -40,3 +40,9 @@ Known-good sample:
 ```powershell
 python run_backtest.py --file sample_data/reliance_sample.csv --symbol RELIANCE --capital 100000 --asset-class equity
 ```
+
+Export reports:
+
+```powershell
+python run_backtest.py --file sample_data/reliance_sample.csv --symbol RELIANCE --capital 100000 --asset-class equity --export-dir reports/reliance_sample
+```

@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 
 from backtest.backtest_engine import BacktestResult, BacktestEngine
+from backtest.report_exporter import BacktestReportExporter
 from data.market_data import MarketDataLoader
 from execution.risk_manager import RiskManager
 from strategy.trend_strategy import TrendBreakoutStrategy
@@ -35,6 +36,10 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=3,
         help="Consecutive loss kill-switch threshold.",
+    )
+    parser.add_argument(
+        "--export-dir",
+        help="Optional directory where metrics, trades, and equity curve files are saved.",
     )
     return parser
 
@@ -80,6 +85,13 @@ def format_result(result: BacktestResult) -> str:
     return "\n".join(lines)
 
 
+def format_export_paths(export_paths: dict[str, Path]) -> str:
+    lines = ["Exported Files"]
+    for name, path in export_paths.items():
+        lines.append(f"{name}: {path}")
+    return "\n".join(lines)
+
+
 def main() -> None:
     args = build_parser().parse_args()
     result = run_backtest(
@@ -92,6 +104,10 @@ def main() -> None:
         max_consecutive_losses=args.max_consecutive_losses,
     )
     print(format_result(result))
+    if args.export_dir:
+        export_paths = BacktestReportExporter().export(result, args.export_dir)
+        print()
+        print(format_export_paths(export_paths))
 
 
 if __name__ == "__main__":

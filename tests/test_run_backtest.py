@@ -1,5 +1,7 @@
 from backtest.backtest_engine import BacktestResult
-from run_backtest import build_parser, format_result
+from pathlib import Path
+
+from run_backtest import build_parser, format_export_paths, format_result
 
 
 def test_format_result_outputs_key_metrics() -> None:
@@ -43,3 +45,18 @@ def test_parser_accepts_required_backtest_arguments() -> None:
     assert args.symbol == "RELIANCE"
     assert args.capital == 200000
     assert args.asset_class == "equity"
+
+
+def test_format_export_paths_outputs_saved_files() -> None:
+    output = format_export_paths(
+        {
+            "metrics": Path("reports/metrics.json"),
+            "trades": Path("reports/trades.csv"),
+        }
+    )
+
+    assert "Exported Files" in output
+    assert "metrics:" in output
+    assert "metrics.json" in output
+    assert "trades:" in output
+    assert "trades.csv" in output
