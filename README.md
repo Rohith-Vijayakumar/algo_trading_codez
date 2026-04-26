@@ -34,3 +34,9 @@ python main.py
 ```powershell
 python run_backtest.py --file data/reliance.csv --symbol RELIANCE --capital 100000 --asset-class equity
 ```
+
+Known-good sample:
+
+```powershell
+python run_backtest.py --file sample_data/reliance_sample.csv --symbol RELIANCE --capital 100000 --asset-class equity
+```
